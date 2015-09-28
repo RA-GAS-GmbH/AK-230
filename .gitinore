@@ -22,6 +22,9 @@ nbproject/Makefile-genesis.properties
 *.ccspjt
 
 .~lock*
+
+Makefile
+
 nbactions.xml
 nb-configuration.xml
 funclist
