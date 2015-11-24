@@ -6,9 +6,9 @@
  */
 
 // Alte MCU
-#include <16f873.h>
+//#include <16f873.h>
 // Neue MCU
-//#include <16F883.h>
+#include <16F883.h>
 #device *=16 ADC=10
 
 
@@ -64,6 +64,7 @@ void init_timer() {
 
 void main()
 {
+//    printf ("AK-230-AKKU-HU\r\n");
     // Timer for Hupe and LED
     init_timer();
     
@@ -78,8 +79,10 @@ void main()
     while(1) {
         // No MAINS and BAT_MONITOR is up -> we run on accu
         if (!input (MAINS_MONITOR) && input (BAT_MONITOR))  {
+//            printf ("Alarm Flag set!\r\n");
             alarm_flag = 1;
         } else {
+//            printf ("Alarm Flag unset!\r\n");
             alarm_flag = 0;
             // Hupe und LED aus, kein Alarm
             output_low(LED);
