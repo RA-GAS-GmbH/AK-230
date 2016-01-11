@@ -6,15 +6,15 @@
  */
 
 // Alte MCU
-//#include <16f873.h>
+#include <16f873.h>
 // Neue MCU
-#include <16F883.h>
+//#include <16F883.h>
 #device *=16 ADC=10
 
 
 #fuses XT,NOWDT,PUT,NOPROTECT,NOCPD,NOBROWNOUT
 #use delay(clock=4MHz)   // 4MHz external Clock
-#use rs232(baud=19200, xmit=PIN_C6, rcv=PIN_C7, enable=PIN_B1, parity=N, bits=8)
+#use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7, enable=PIN_B1, parity=N, bits=8)
 
 #define BAT_MONITOR     PIN_A0
 #define MAINS_MONITOR   PIN_A2
