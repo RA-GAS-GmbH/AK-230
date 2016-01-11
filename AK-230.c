@@ -6,9 +6,9 @@
  */
 
 // Alte MCU
-#include <16f873.h>
+//#include <16f873.h>
 // Neue MCU
-//#include <16F883.h>
+#include <16F883.h>
 #device *=16 ADC=10
 
 
@@ -17,7 +17,7 @@
 #use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7, enable=PIN_B1, parity=N, bits=8)
 
 // Hardware mit Akku? 1 für JA und 0 für NEIN
-#define HARDWARE_MIT_AKKU   1
+#define HARDWARE_MIT_AKKU   0   // 0 -> kein Akku, 1 -> Akku
 
 #define BAT_MONITOR     PIN_A0
 #define MAINS_MONITOR   PIN_A2
@@ -25,9 +25,9 @@
 #define LED             PIN_B5
 #define HUPE_SEKUNDEN   120     // Anzahl der Sekunden, die Hupe ertönen soll
 
-int counter = 0;           // Counter um die Sekunden auszurechnen
+int counter = 0;                // Counter um die Sekunden auszurechnen
 int hupe_sek = HUPE_SEKUNDEN *2;
-int1 alarm_flag = 0;           // 0 -> kein Alarm, 1 -> Alarm
+int1 alarm_flag = 0;            // 0 -> kein Alarm, 1 -> Alarm
 
 
 /** Interrupt Callback Funktion
