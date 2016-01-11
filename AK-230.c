@@ -16,15 +16,18 @@
 #use delay(clock=4MHz)   // 4MHz external Clock
 #use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7, enable=PIN_B1, parity=N, bits=8)
 
+// Hardware mit Akku? 1 für JA und 0 für NEIN
+#define HARDWARE_MIT_AKKU   0   // 0 -> kein Akku, 1 -> Akku
+
 #define BAT_MONITOR     PIN_A0
 #define MAINS_MONITOR   PIN_A2
 #define HUPE            PIN_B3
 #define LED             PIN_B5
 #define HUPE_SEKUNDEN   120     // Anzahl der Sekunden, die Hupe ertönen soll
 
-int counter = 0;           // Counter um die Sekunden auszurechnen
+int counter = 0;                // Counter um die Sekunden auszurechnen
 int hupe_sek = HUPE_SEKUNDEN *2;
-int1 alarm_flag = 0;           // 0 -> kein Alarm, 1 -> Alarm
+int1 alarm_flag = 0;            // 0 -> kein Alarm, 1 -> Alarm
 
 
 /** Interrupt Callback Funktion
@@ -77,8 +80,10 @@ void main()
     
    // Main Loop
     while(1) {
-        // No MAINS and BAT_MONITOR is up -> we run on accu
-        if (!input (MAINS_MONITOR) && input (BAT_MONITOR))  {
+        if (!HARDWARE_MIT_AKKU) {
+            alarm_flag = 1;   
+        } // No MAINS and BAT_MONITOR is up -> we run on accu
+        else if (HARDWARE_MIT_AKKU && !input (MAINS_MONITOR) && input (BAT_MONITOR))  {
 //            printf ("Alarm Flag set!\r\n");
             alarm_flag = 1;
         } else {
