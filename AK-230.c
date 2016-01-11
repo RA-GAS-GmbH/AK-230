@@ -6,9 +6,9 @@
  */
 
 // Alte MCU
-#include <16f873.h>
+//#include <16f873.h>
 // Neue MCU
-//#include <16F883.h>
+#include <16F883.h>
 #device *=16 ADC=10
 
 
