@@ -14,7 +14,7 @@
 
 #fuses XT,NOWDT,PUT,NOPROTECT,NOCPD,NOBROWNOUT
 #use delay(clock=4MHz)   // 4MHz external Clock
-#use rs232(baud=19200, xmit=PIN_C6, rcv=PIN_C7, enable=PIN_B1, parity=N, bits=8)
+#use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7, enable=PIN_B1, parity=N, bits=8)
 
 #define BAT_MONITOR     PIN_A0
 #define MAINS_MONITOR   PIN_A2
@@ -64,6 +64,7 @@ void init_timer() {
 
 void main()
 {
+//    printf ("AK-230-AKKU-HU\r\n");
     // Timer for Hupe and LED
     init_timer();
     
@@ -78,8 +79,10 @@ void main()
     while(1) {
         // No MAINS and BAT_MONITOR is up -> we run on accu
         if (!input (MAINS_MONITOR) && input (BAT_MONITOR))  {
+//            printf ("Alarm Flag set!\r\n");
             alarm_flag = 1;
         } else {
+//            printf ("Alarm Flag unset!\r\n");
             alarm_flag = 0;
             // Hupe und LED aus, kein Alarm
             output_low(LED);
