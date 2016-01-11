@@ -36,7 +36,7 @@
         <targetDevice>PIC16F873A</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>PICkit3PlatformTool</platformTool>
+        <platformTool>ICD3PlatformTool</platformTool>
         <languageToolchain>CCSC</languageToolchain>
         <languageToolchainVersion></languageToolchainVersion>
         <platform>3</platform>
