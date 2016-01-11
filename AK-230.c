@@ -17,7 +17,7 @@
 #use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7, enable=PIN_B1, parity=N, bits=8)
 
 // Hardware mit Akku? 1 für JA und 0 für NEIN
-#define HARDWARE_MIT_AKKU   0
+#define HARDWARE_MIT_AKKU   1
 
 #define BAT_MONITOR     PIN_A0
 #define MAINS_MONITOR   PIN_A2
