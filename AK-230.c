@@ -22,7 +22,6 @@
 #include <16F883.h>
 #device *=16 ADC=10
 
-
 #fuses XT,NOWDT,PUT,NOPROTECT,NOCPD,NOBROWNOUT
 #use delay(clock=4MHz)   // 4MHz external Clock
 //#use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7, enable=PIN_B1, parity=N, bits=8)
@@ -32,16 +31,6 @@
 #define TIMER1_FREQUENCY (XTAL_FREQUENCY / 4)      // 1 clock tick = 1 instr. cycle = crystal frequency / 4
 int32 ticker;
 int8 seconds=0;
-
-// https://www.ccsinfo.com/forum/viewtopic.php?t=26177
-void RTC_init() {
-    ticker = TIMER1_FREQUENCY;                  // Initalize clock counter to number of clocks per second
-    setup_timer_1( T1_INTERNAL | T1_DIV_BY_1);  // Initalize 16bit timer1 to interrupt
-                                                // exactly every 65536 clock cycles
-                                                // (about 76 times per second)
-    enable_interrupts(GLOBAL);
-    enable_interrupts(INT_TIMER1);
-}
 
 // Hardware mit Akku? 1 für JA und 0 für NEIN
 #define HARDWARE_MIT_AKKU   1
@@ -61,6 +50,17 @@ int counter = 0;
 int hupe_sek = HUPE_SEKUNDEN;
 // 0 -> kein Alarm, 1 -> Alarm
 int1 alarm_flag = 0;
+
+
+// https://www.ccsinfo.com/forum/viewtopic.php?t=26177
+void RTC_init() {
+    ticker = TIMER1_FREQUENCY;                  // Initalize clock counter to number of clocks per second
+    setup_timer_1( T1_INTERNAL | T1_DIV_BY_1);  // Initalize 16bit timer1 to interrupt
+                                                // exactly every 65536 clock cycles
+                                                // (about 76 times per second)
+    enable_interrupts(GLOBAL);
+    enable_interrupts(INT_TIMER1);
+}
 
 /** Handle des Alarms
  * Wird aufgerufen wenn sekunde wechselt, im TIMER1 interrupt TIMER1_isr().
@@ -107,7 +107,7 @@ void main() {
     // Main Loop
     while (1) {
         // Kein ACCU vorhanden (Alarm wird sofort eingeschalten.)
-        if (!HARDWARE_MIT_AKKU) {
+        if (!HARDWARE_MIT_AKKU && input(MAINS_MONITOR)) {
             alarm_flag = 1;
         }
             // ACCU vorhanden, Baterie vorhanden (BAT), Haupt Spannungsversorgung AUSGEFALLEN (!MAINS)
@@ -122,7 +122,11 @@ void main() {
             // Reset Alarm (Alarm aus)
             alarm_flag = 0;
             // Reset Hupe Counter
-            hupe_sek = HUPE_SEKUNDEN * 2;
+            hupe_sek = HUPE_SEKUNDEN;
+            // Guard Hupe und LED aus!
+            output_low(LED);
+            output_low(HUPE);
+        } else {
             // Guard Hupe und LED aus!
             output_low(LED);
             output_low(HUPE);
